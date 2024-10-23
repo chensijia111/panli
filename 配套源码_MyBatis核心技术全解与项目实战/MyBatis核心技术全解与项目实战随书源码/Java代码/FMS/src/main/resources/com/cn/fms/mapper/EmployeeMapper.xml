@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.fms.mapper.EmployeeMapper">
+    <!-- 依据条件查询员工的SQL片段 -->
+    <sql id="queryEmployeeWhere">
+        <where>
+            <if test="name != null and name != ''">
+                (name like "%"#{name}"%" or nickname like "%"#{name}"%")
+            </if>
+            <if test="roleID != null and roleID != ''">
+                and role = #{roleID}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 依据姓名和密码查询员工 -->
+    <select id="queryEmployeeByNameAndPassword" parameterType="String" resultType="employee">
+        select * from employee where name = #{name} and password = #{password}
+    </select>
+
+    <!-- 依据姓名和角色查询员工 -->
+    <select id="queryEmployeeByNameAndRole" resultType="employee">
+        select e.id,e.name,e.nickname,e.password,d.description as role
+        from employee as e left outer join dictionary as d on e.role = d.id
+        <include refid="queryEmployeeWhere"/>
+    </select>
+
+    <!-- 新增员工 -->
+    <insert id="insertEmployee" parameterType="employee">
+        insert into employee(name, nickname, password, role)
+        values (#{name}, #{nickname}, #{password}, #{role})
+    </insert>
+
+    <!-- 依据id查询员工 -->
+    <select id="queryEmployeeById" parameterType="Integer" resultType="employee">
+        select * from employee where id = #{id}
+    </select>
+
+    <!-- 更新员工 -->
+    <update id="updateEmployee" parameterType="employee">
+        update employee
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="nickname!=null">
+                nickname=#{nickname},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="role!=null">
+                role=#{role},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 删除员工 -->
+    <delete id="deleteEmployee" parameterType="Integer">
+        delete from employee where id = #{id}
+    </delete>
+
+</mapper>

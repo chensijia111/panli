@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>新增投资者</title>
+    <!-- 引入Bootstrap -->
+    <link rel="stylesheet" href="/static/Bootstrap/css/bootstrap.min.css"/>
+    <!-- 引入jQuery -->
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <!-- 引入Bootstrap的JavaScript插件 -->
+    <script src="/static/Bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet"/>
+    <script src="/static/js/sb-admin-2.js"></script>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css"/>
+
+
+    <script type="text/javascript">
+        function insertInvestor() {
+            $.post("/investorController/insert",
+                $("#insert_investor_form").serialize(), function (data) {
+                    alert(data.description);
+                    if (data.status === 'OK') {
+                        window.location.href = '/investorController/list'
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <div th:replace="~{navbar :: nav }"></div>
+    <!-- 客户新增部分  start-->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">新建客户信息</h1>
+            </div>
+        </div>
+        <div class="">
+            <div class="panel-body">
+                <div class="row container">
+                    <form class="form-horizontal" id="insert_investor_form">
+                        <div class="form-group">
+                            <label for="new_investorName" class="col-md-1 control-label">客户姓名</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="new_investorName" name="name" type="text"
+                                       placeholder="客户姓名" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_investorLevel" class="col-md-1 control-label"
+                                   style="float: left;">客户级别</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="new_investorLevel" name="level" class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="level : ${levelList}" th:value="${level.id}"
+                                            th:text="${level.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_investorField" class="col-md-1 control-label"
+                                   style="float: left;">投资领域</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="new_investorField" name="field" class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="field : ${fieldList}" th:value="${field.id}"
+                                            th:text="${field.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_investorIntent" class="col-md-1 control-label"
+                                   style="float: left;">投资意向</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="new_investorIntent" name="intent"
+                                        class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="intent : ${intentList}" th:value="${intent.id}"
+                                            th:text="${intent.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_amount" class="col-md-1 control-label">投资金额</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="new_amount" name="amount" type="text"
+                                       placeholder="投资金额" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_city" class="col-md-1 control-label">居住城市</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="new_city" name="city" type="text"
+                                       placeholder="居住城市" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_number" class="col-md-1 control-label">联系电话</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="new_number" name="number" type="text"
+                                       placeholder="联系电话" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_note" class="col-md-1 control-label">备注信息</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="new_note" name="note" type="text"
+                                       placeholder="备注信息" class="form-control"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div class="left">
+                    <button type="button" class="btn btn-primary"
+                            onclick="insertInvestor()">新增客户
+                    </button>
+                    <span>&nbsp;&nbsp;</span>
+                    <a class="btn btn-default" href="/investorController/list"
+                       role="button">返回列表</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

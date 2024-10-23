@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.UserParameterMapper">
+
+    <!-- 接收单个普通类型参数 -->
+    <!-- resultType="java.lang.Integer" 可简写为resultType="int" -->
+    <select id="queryUserById" parameterType="java.lang.Integer" resultType="User">
+        select id,username,password,gender from user where id = #{id}
+    </select>
+
+    <!-- 接收多个普通类型参数 -->
+    <select id="queryUsersByUsernameAndGender" resultType="User">
+        <!--接收多个普通类型参数方式1-->
+        <!-- select * from user where username = #{arg0} and gender= #{arg1} -->
+        <!--接收多个普通类型参数方式2-->
+        select * from user where username = #{param1} and gender= #{param2}
+    </select>
+
+
+    <!-- 结合@Param注解接收多个普通类型参数 -->
+    <select id="queryUsersByUsernameOrGender" resultType="User">
+        select * from user where username = #{username} or gender= #{gender}
+    </select>
+
+    <!-- 接收单个pojo作为参数 -->
+    <insert id="insertUser" parameterType="User">
+        insert into user(username,password,gender) values (#{username},#{password},#{gender})
+    </insert>
+
+    <!-- 接收多个pojo作为参数 -->
+    <select id="queryUsersByTwoUser" resultType="User">
+        select * from user where username = #{param1.username} or gender= #{param2.gender}
+    </select>
+
+    <!-- 结合@Param注解接收多个pojo作为参数 -->
+    <select id="queryUsersByTwoUserWithParam" resultType="User">
+        select * from user where username = #{firstUser.username} or gender= #{secondUser.gender}
+    </select>
+
+    <!-- 接收Map类型参数 -->
+    <select id="queryUsersByMap" resultType="User">
+        select * from user where username = #{username} or gender= #{gender}
+    </select>
+
+    <!-- 接收List类型参数 -->
+    <select id="queryUsersByList" resultType="User">
+        select * from user where id in
+        <foreach item="userID" collection="idList" separator="," open="(" close=")">
+            #{userID}
+        </foreach>
+    </select>
+
+    <!-- 接收Array类型参数 -->
+    <select id="queryUsersByArray" resultType="User">
+        select * from user where id in
+        <foreach item="userID" collection="idArray" separator="," open="(" close=")">
+            #{userID}
+        </foreach>
+    </select>
+
+</mapper>
+

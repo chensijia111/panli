@@ -1,0 +1,11 @@
+1.<if> 条件满足执行语句
+2.<where>
+(1)
+(2)
+3.<choose> <when> <otherwise>相当于
+if(){
+}else if{
+}else{
+}
+4.<set> update语句里的set子句
+update user set username='张三',password='123456'

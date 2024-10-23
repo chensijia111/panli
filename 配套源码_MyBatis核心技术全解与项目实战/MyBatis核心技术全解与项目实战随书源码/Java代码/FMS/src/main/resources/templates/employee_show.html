@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>员工列表</title>
+    <!-- 引入Bootstrap -->
+    <link rel="stylesheet" href="/static/Bootstrap/css/bootstrap.min.css"/>
+    <!-- 引入jQuery -->
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <!-- 引入Bootstrap的JavaScript插件 -->
+    <script src="/static/Bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet"/>
+    <script src="/static/js/sb-admin-2.js"></script>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css"/>
+
+
+    <script type="text/javascript">
+        // 删除员工
+        function deleteEmployee(id) {
+            if (confirm('确实要删除该员工吗?')) {
+                $.post("/employeeController/delete",
+                    {"id": id},
+                    function (data) {
+                        alert(data.description);
+                        window.location.reload();
+                    });
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <div th:replace="~{navbar :: nav }"></div>
+    <!-- 员工列表查询部分  start-->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">员工管理</h3>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form method="post" action="/employeeController/list" class="form-inline">
+                    <div class="form-group">
+                        <label>员工姓名</label>
+                        <input name="name" th:value="${name}" type="text" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>员工级别</label>
+                        <select name="roleID" class="form-control">
+                            <option value="">--请选择--</option>
+                            <option th:each="role : ${roleList}" th:value="${role.id}"
+                                    th:selected="${role.id+'' == roleID}"
+                                    th:text="${role.description}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning">查询</button>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${session.employee.role == '13'}">
+            <a href="/employeeController/prepareInsert" class="btn btn-primary" style="float:left">新建</a>
+            <a href="/employeeController/list" class="btn btn-success" style="float:right">刷新</a>
+        </div>
+        <br><br><br>
+
+        <!-- 员工列表 -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">员工信息列表</div>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>员工姓名</th>
+                            <th>员工昵称</th>
+                            <th>员工密码</th>
+                            <th>员工级别</th>
+                            <th th:if="${session.employee.role == '13'}">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="employee : ${pageInfo.list}">
+                            <td th:text="${employee.id}" style="text-align: center"></td>
+                            <td th:text="${employee.name}" style="text-align: center"></td>
+                            <td th:text="${employee.nickname}" style="text-align: center"></td>
+                            <td th:text="${session.employee.role == '13' ? employee.password : '******'}" style="text-align: center"></td>
+                            <td th:text="${employee.role}" style="text-align: center"></td>
+                            <td th:if="${session.employee.role == '13' }" style="text-align: center">
+                                <a th:href="|/employeeController/prepareUpdate?id=${employee.id}|"
+                                   class="btn btn-primary btn-xs">修改</a>
+                                <a href="#" th:onclick="|deleteEmployee(${employee.id})|" th:if="${session.employee.id != employee.id}"
+                                   class="btn btn-danger btn-xs">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            第[[${pageInfo.pageNum}]]页，共[[${pageInfo.pages}]]页，共[[${pageInfo.total}]]条记录
+                        </div>
+                        <div class="col-md-6 offset-md-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           th:href="|/employeeController/list?page=1&name=${name}&roleID=${roleID}|">首页
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:if="${pageInfo.hasPreviousPage}">
+                                        <a class="page-link"
+                                           th:href="|/employeeController/list?page=${pageInfo.pageNum-1}&name=${name}&roleID=${roleID}|">上一页</a>
+                                    </li>
+
+                                    <li class="page-item" th:each="page : ${pageInfo.navigatepageNums}">
+                                        <a class="page-link"
+                                           th:classappend="${page==pageInfo.pageNum ? 'active' : '' }"
+                                           th:href="|/employeeController/list?page=${page}&name=${name}&roleID=${roleID}|"
+                                           th:text="${page}">
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" th:if="${pageInfo.hasNextPage}">
+                                        <a class="page-link"
+                                           th:href="|/employeeController/list?page=${pageInfo.pageNum+1}&name=${name}&roleID=${roleID}|">下一页</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           th:href="|/employeeController/list?page=${pageInfo.pages}&name=${name}&roleID=${roleID}|">末页</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 员工列表查询部分  end-->
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+-- 创建第一个库
+DROP DATABASE IF EXISTS mybatisplusdsdb1;
+CREATE DATABASE mybatisplusdsdb1;
+use mybatisplusdsdb1;
+
+-- 创建公民表
+DROP TABLE IF EXISTS t_person;
+CREATE TABLE t_person(
+    p_id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    p_name VARCHAR(30),
+	p_gender VARCHAR(10),
+    p_age INT(10)
+);
+
+-- 向公民表插入数据
+INSERT INTO t_person (p_name, p_gender, p_age) VALUES
+( 'lucy', 'female', 18),
+( 'pipi', 'female', 19),
+( 'dodo', 'female', 22);
+
+-- 查询公民表中的数据
+SELECT * FROM t_person;
+
+-- 创建第二个库
+DROP DATABASE IF EXISTS mybatisplusdsdb2;
+CREATE DATABASE mybatisplusdsdb2;
+use mybatisplusdsdb2;
+
+-- 创建硬盘表
+DROP TABLE IF EXISTS t_disk;
+CREATE TABLE t_disk(
+    d_id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    d_name VARCHAR(30),
+	d_price DOUBLE(7,2)
+);
+
+-- 向硬盘表插入数据
+INSERT INTO t_disk (d_name, d_price) VALUES
+( '三星', 3000),
+( '联想', 3100),
+( '东芝', 3200);
+
+-- 查询硬盘表中的数据
+SELECT * FROM t_disk;
+
+-- 创建第三个库
+DROP DATABASE IF EXISTS mybatisplusdsdb3;
+CREATE DATABASE mybatisplusdsdb3;
+use mybatisplusdsdb3;
+
+-- 创建鼠标表
+DROP TABLE IF EXISTS t_mouse;
+CREATE TABLE t_mouse(
+    m_id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    m_name VARCHAR(30),
+	m_price DOUBLE(6,2)
+);
+
+-- 向鼠标表插入数据
+INSERT INTO t_mouse (m_name, m_price) VALUES
+( '飞燕', 25),
+( '罗技', 35),
+( '技嘉', 45);
+
+-- 查询鼠标表中的数据
+SELECT * FROM t_mouse;

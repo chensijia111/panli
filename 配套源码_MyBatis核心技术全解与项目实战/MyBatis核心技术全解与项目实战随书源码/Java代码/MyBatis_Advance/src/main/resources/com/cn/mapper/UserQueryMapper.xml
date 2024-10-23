@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.UserQueryMapper">
+
+    <select id="queryUserById" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="queryAllUser" resultType="User">
+        select * from user
+    </select>
+
+    <select id="getUserCount" resultType="Integer">
+        select count(*) from user
+    </select>
+
+    <!-- resultType="java.util.HashMap" 可简写为 resultType="hashMap" -->
+    <select id="queryUserMapById" resultType="java.util.HashMap">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="queryAllUserMap" resultType="User">
+        select * from user
+    </select>
+
+    <select id="queryUsersByLike" resultType="User">
+        <!--模糊查询常见写法1-->
+        <!--select * from user where username like '%${username}%'-->
+        <!--模糊查询常见写法2-->
+        <!--select * from user where username like concat('%',#{username},'%')-->
+        <!--模糊查询常见写法3-->
+        select * from user where username like "%"#{username}"%"
+    </select>
+
+</mapper>
+

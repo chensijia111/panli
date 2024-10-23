@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link th:href="@{/static/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+<br><br><br>
+<div class="loginav">
+    <div class="loginbox boxall">
+        <div class="logo">私募基金投资管理平台</div>
+        <!-- 提示信息 -->
+        <div class="logintit">
+            <p th:if="${session.msg}">
+                <span id="message" style="color: red" th:text="${session.msg}"></span>
+            </p>
+        </div>
+        <form id="loginForm" th:action="@{/employeeController/login}" method="post">
+            <ul class="logininput">
+                <li>
+                    <i><img th:src="@{/static/images/icon1.png}"></i>
+                    <input id="inputName" name="name" class="forminput" type="text" placeholder="用户名">
+                </li>
+                <li>
+                    <i><img th:src="@{/static/images/icon2.png}"></i>
+                    <input id="inputPassword" name="password" class="forminput" type="password" placeholder="密码">
+                </li>
+                <li>
+                    <i><img th:src="@{/static/images/icon3.png}"></i>
+                    <input class="forminput" type="text" value="" placeholder="验证码" style="width: calc(100% - 150px)">
+                    <img th:src="@{/static/images/code.jpg}" class="yzmimg">
+                </li>
+
+                <li>
+                    <a onclick="document:loginForm.submit()" class="btn btnblock btn-lg btn-block btn-primary">登录</a>
+                </li>
+                <li>
+                    <div class=" flex1 forget">
+                        <label> <input type="checkbox" checked class="aui-checkbox">&nbsp;记住密码</label>
+                        <a href="" class="text-primary"> 忘记密码？</a>
+                    </div>
+                </li>
+            </ul>
+        </form>
+
+        <div class="boxfoot"></div>
+    </div>
+</div>
+<div class="copyright">
+    版权所有：All Right Reserved 2023-2048
+</div>
+</body>
+
+</html>

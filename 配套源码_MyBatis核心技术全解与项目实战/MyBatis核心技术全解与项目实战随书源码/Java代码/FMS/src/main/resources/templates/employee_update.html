@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>修改员工</title>
+    <!-- 引入Bootstrap -->
+    <link rel="stylesheet" href="/static/Bootstrap/css/bootstrap.min.css"/>
+    <!-- 引入jQuery -->
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <!-- 引入Bootstrap的JavaScript插件 -->
+    <script src="/static/Bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet"/>
+    <script src="/static/js/sb-admin-2.js"></script>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css"/>
+
+
+    <script type="text/javascript">
+        // 修改员工
+        function updateEmployee() {
+            $.post("/employeeController/update",
+                $("#employeeForm").serialize(), function (data) {
+                    alert(data.description);
+                    if (data.status === 'OK') {
+                        window.location.href = '/employeeController/list'
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <div th:replace="~{navbar :: nav }"></div>
+    <!-- 员工修改部分  start-->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">修改员工</h1>
+            </div>
+        </div>
+        <div class="">
+            <div class="panel-body">
+                <div class="row container">
+                    <form class="form-horizontal" id="employeeForm">
+                        <input type="hidden" id="update_id" name="id" th:value="${employee.id}"/>
+                        <div class="form-group">
+                            <label for="update_name" class="col-md-1 control-label">员工姓名</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Employee中的属性名保持一致 -->
+                                <input id="update_name" name="name" type="text" th:value="${employee.name}"
+                                       placeholder="员工名称" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update_nickname" class="col-md-1 control-label"
+                                   style="float: left;">员工昵称</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Employee中的属性名保持一致 -->
+                                <input id="update_nickname" name="nickname" type="text" th:value="${employee.nickname}"
+                                       placeholder="员工昵称" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update_password" class="col-md-1 control-label"
+                                   style="float: left;">员工密码</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Employee中的属性名保持一致 -->
+                                <input id="update_password" name="password" type="text" th:value="${employee.password}"
+                                       placeholder="员工密码" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update_role" class="col-md-1 control-label"
+                                   style="float: left;">员工级别</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Employee中的属性名保持一致 -->
+                                <select id="update_role" name="role" class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="role : ${roleList}" th:value="${role.id}"
+                                            th:selected="${role.id+'' == employee.role}"
+                                            th:text="${role.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div class="left">
+                    <button type="button" class="btn btn-primary"
+                            onclick="updateEmployee()">保存修改
+                    </button>
+                    <span>&nbsp;&nbsp;</span>
+                    <a class="btn btn-default" href="/employeeController/list"
+                       role="button">返回列表</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+-- 创建库
+DROP DATABASE IF EXISTS mybatisxdb;
+CREATE DATABASE mybatisxdb;
+USE mybatisxdb;
+
+-- 创建工程师表
+DROP TABLE IF EXISTS t_engineer;
+CREATE TABLE t_engineer(
+    id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30),
+	gender VARCHAR(10),
+    age INT(10)
+);
+
+-- 向工程师表插入数据
+INSERT INTO t_engineer (name, gender, age) VALUES
+('tata', 'male', 28),
+('dodo', 'male', 27),
+('rprp', 'male', 39),
+('pipi', 'male', 24);
+
+-- 查询工程师表数据
+SELECT * FROM t_engineer;

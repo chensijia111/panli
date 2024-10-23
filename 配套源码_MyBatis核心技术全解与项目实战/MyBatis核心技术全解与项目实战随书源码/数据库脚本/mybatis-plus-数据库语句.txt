@@ -1,0 +1,92 @@
+-- 创建数据库
+DROP DATABASE IF EXISTS mybatisplusdb;
+CREATE DATABASE mybatisplusdb;
+use mybatisplusdb;
+
+-- 创建用户表
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+    id BIGINT(20) NOT NULL COMMENT '主键ID',
+    name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age INT(11) NULL DEFAULT NULL COMMENT '年龄',
+    email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
+    PRIMARY KEY (id)
+);
+
+-- 向用户表插入数据
+INSERT INTO user (id, name, age, email) VALUES
+(1, 'dodo', 18, 'batj1@ptpress.com'),
+(2, 'jack', 20, 'batj2@ptpress.com'),
+(3, 'tome', 28, 'batj3@ptpress.com'),
+(4, 'lucy', 21, 'batj4@ptpress.com'),
+(5, 'tata', 24, 'batj5@ptpress.com');
+
+-- 查询用户表数据
+SELECT * FROM user;
+
+
+-- 创建员工表
+DROP TABLE IF EXISTS t_employee;
+CREATE TABLE t_employee(
+    e_id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    e_name VARCHAR(30),
+	e_gender INT(10),
+    e_age INT(10),
+	status INT(10)
+);
+
+-- 向员工表插入数据
+INSERT INTO t_employee (e_name, e_gender, e_age, status) VALUES
+( 'lucy', 1, 18, 0 ),
+( 'pipi', 0, 19, 0 ),
+( 'tata', 1, 20, 0 ),
+( 'gugu', 0, 21, 0 ),
+( 'dodo', 1, 22, 0 );
+
+-- 查询员工表数据
+SELECT * FROM t_employee;
+
+-- 创建医生表
+DROP TABLE IF EXISTS t_doctor;
+CREATE TABLE t_doctor(
+    d_id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+    d_name VARCHAR(30),
+	d_gender VARCHAR(10),
+    d_age INT(10),
+	status INT(10)
+);
+
+-- 向医生表插入数据
+INSERT INTO t_doctor (d_name, d_gender, d_age, status) VALUES
+( 'lucy', 'female', 38, 0 ),
+( 'pipi', 'female', 39, 0 ),
+( 'tata', 'female', 40, 0 ),
+( 'gugu', 'female', 41, 0 ),
+( 'dodo', 'female', 42, 0 );
+
+-- 查询医生表数据
+SELECT * FROM t_doctor;
+
+-- 创建账户表
+DROP TABLE IF EXISTS t_account;
+CREATE TABLE t_account(
+    a_id BIGINT(20) NOT NULL COMMENT '主键ID',
+    a_name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    a_money INT(11) DEFAULT 0 COMMENT '余额',
+    a_version INT(11) DEFAULT 0 COMMENT '版本号',
+    PRIMARY KEY (a_id)
+);
+
+-- 向账户表插入数据
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (1, 'zxx', 900, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (2, 'wmd', 800, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (3, 'lqx', 700, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (4, 'zmy', 600, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (5, 'lbb', 500, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (6, 'fbb', 400, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (7, 'pmn', 300, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (8, 'lyy', 200, 0);
+INSERT INTO t_account (a_id, a_name, a_money, a_version) VALUES (9, 'zty', 100, 0);
+
+-- 查询账户表数据
+SELECT * FROM t_account;

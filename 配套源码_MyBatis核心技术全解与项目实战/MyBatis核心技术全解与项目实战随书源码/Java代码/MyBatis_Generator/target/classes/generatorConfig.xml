@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--
+        targetRuntime 配置生成的版本
+        1、MyBatis3		   功能完整版本
+        2、MyBatis3Simple  简易增删改查版
+     -->
+    <context id="MySQLTables" targetRuntime="MyBatis3">
+        <!-- 去掉自动生成的代码的注释（可选项） -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!-- 配置数据源 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mybatisdb"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!--
+            配置JavaBean的生成策略
+            1、targetPackage    生成的JavaBean的包名
+            2、targetProject    生成的JavaBean的存放路径
+         -->
+        <javaModelGenerator targetPackage="com.cn.pojo" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--
+            配置映射文件的生成策略
+            1、targetPackage  生成的映射文件的包名
+            2、targetProject  生成的映射文件的存放路径
+         -->
+        <sqlMapGenerator targetPackage="com.cn.mapper" targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--
+            配置接口文件的生成策略
+            1、targetPackage  生成的接口文件的包名
+            2、targetProject  生成的接口文件的存放路径
+         -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.cn.mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 配置数据表和JavaBean的对应关系-->
+        <table tableName="worker" domainObjectName="Worker"/>
+        <table tableName="factory" domainObjectName="Factory"/>
+
+    </context>
+</generatorConfiguration>

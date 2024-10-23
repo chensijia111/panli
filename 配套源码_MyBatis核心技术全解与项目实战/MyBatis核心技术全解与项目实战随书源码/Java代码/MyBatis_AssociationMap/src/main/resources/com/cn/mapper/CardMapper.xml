@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.CardMapper">
+    <!--依据id查询身份证-->
+    <select id="findCardById" resultType="Card">
+        select * from card where id = #{id}
+    </select>
+</mapper>
+

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.UserMapper">
+
+
+    <!-- 测试动态SQL语句if -->
+    <select id="queryUserWithIf" resultType="User">
+        select * from user where 1=1
+        <if test="username !=null and username !='' ">
+            and username=#{username}
+        </if>
+        <if test="password !=null and password !='' ">
+            and password=#{password}
+        </if>
+    </select>
+
+    <!-- 测试动态SQL语句where -->
+    <select id="queryUserWithWhere" resultType="User">
+        select * from user
+        <where>
+            <if test="username !=null and username !=''">
+                and username=#{username}
+            </if>
+            <if test="password !=null and password !=''">
+                and password=#{password}
+            </if>
+        </where>
+    </select>
+
+    <!-- 测试动态SQL语句choose -->
+    <select id="queryUserWithChoose" resultType="User">
+        select * from user
+        <where>
+            <choose>
+                <when test="username !=null and username !=''">
+                    and username=#{username}
+                </when>
+                <when test="password !=null and password !=''">
+                    and password=#{password}
+                </when>
+                <otherwise>
+                    and username like concat('%','lu','%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 测试动态SQL语句set -->
+    <update id="updateUserWithSet">
+        update user
+        <set>
+            <if test="user.username !=null and user.username !=''">
+                username=#{user.username},
+            </if>
+            <if test="user.password !=null and user.password !=''">
+                password=#{user.password},
+            </if>
+            <if test="user.gender !=null and user.gender !=''">
+                gender=#{user.gender}
+            </if>
+        </set>
+        where id=#{user.id}
+    </update>
+
+    <!-- 测试动态SQL语句trim -->
+    <update id="updateUserWithTrim" parameterType="User">
+        update user
+        <trim prefix="set" suffixOverrides="and">
+            username=#{username} and
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- 测试动态SQL语句bind -->
+    <select id="queryUserWithBind" resultType="User">
+        select * from user
+        <where>
+            <if test="username !=null and username !=''">
+                <bind name="un" value="'%'+username+'%'"/>
+                username like #{un}
+            </if>
+        </where>
+    </select>
+
+    <!-- 测试foreach遍历List -->
+    <select id="queryUserWithForeach1" resultType="User">
+        select * from user where id in
+        <foreach collection="userIDList" open="(" separator="," close=")" item="userID">
+            #{userID}
+        </foreach>
+    </select>
+
+    <!-- 测试foreach遍历数组 -->
+    <select id="queryUserWithForeach2" resultType="User">
+        select * from user where id in
+        <foreach collection="userIDArray" index="i" item="userID" open="(" separator="," close=")" >
+            #{userID}
+        </foreach>
+    </select>
+<!--    select * from user where gender='female' and id in (71,72,73);-->
+
+    <!-- 测试foreach与Map的使用 -->
+    <select id="queryUserWithForeach3" resultType="User">
+        select * from user where (gender = #{userMap.gender} or gender='female' or gender='男') and id in
+        <foreach collection="userMap.userIDList" item="userID" index="key" open="(" separator="," close=")" >
+            #{userID}
+        </foreach>
+    </select>
+
+    <!-- 定义SQL片段 -->
+    <sql id="columns">id,username,password,gender</sql>
+    <!-- 测试动态SQL语句include -->
+    <select id="queryUserWithInclude" resultType="User">
+        select <include refid="columns"/> from user
+        <where>
+            <if test="username !=null and username !=''">
+                and username=#{username}
+            </if>
+            <if test="password !=null and password !=''">
+                and password=#{password}
+            </if>
+        </where>
+    </select>
+
+</mapper>

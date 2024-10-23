@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--引入db.properties文件-->
+    <properties resource="db.properties" />
+
+    <!--配置类型别名-->
+    <typeAliases>
+        <!--配置类型别名方式1-->
+        <!--<typeAlias type="com.cn.pojo.User" alias="User"></typeAlias>-->
+        <!--配置类型别名方式2-->
+        <!--<typeAlias type="com.cn.pojo.User"></typeAlias>-->
+        <!--配置类型别名方式3-->
+        <package name="com.cn.pojo"/>
+    </typeAliases>
+
+    <!-- 配置多个数据源。默认使用id为development的数据源 -->
+    <environments default="development">
+        <!-- 配置开发环境下的数据源 -->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 获取db.properties中用于开发环境的数据库驱动 -->
+                <property name="driver" value="${db.driver}"/>
+                <!-- 获取db.properties中用于开发环境的数据库连接信息 -->
+                <property name="url" value="${db.url}"/>
+                <!-- 获取db.properties中用于开发环境连接数据库时所需的用户名 -->
+                <property name="username" value="${db.username}"/>
+                <!-- 获取db.properties中用于开发环境连接数据库时所需的密码 -->
+                <property name="password" value="${db.password}"/>
+            </dataSource>
+        </environment>
+
+        <!-- 配置测试环境下的数据源 -->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 获取db.properties中用于测试环境的数据库驱动 -->
+                <property name="driver" value="${dbtest.driver}"/>
+                <!-- 获取db.properties中用于测试环境的数据库连接信息 -->
+                <property name="url" value="${dbtest.url}"/>
+                <!-- 获取db.properties中用于测试环境连接数据库时所需的用户名 -->
+                <property name="username" value="${dbtest.username}"/>
+                <!-- 获取db.properties中用于测试环境连接数据库时所需的密码 -->
+                <property name="password" value="${dbtest.password}"/>
+            </dataSource>
+        </environment>
+
+        <!-- 配置生产环境下的数据源 -->
+        <environment id="production">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 获取db.properties中用于生产环境的数据库驱动 -->
+                <property name="driver" value="${dbproduction.driver}"/>
+                <!-- 获取db.properties中用于生产环境的数据库连接信息 -->
+                <property name="url" value="${dbproduction.url}"/>
+                <!-- 获取db.properties中用于生产环境连接数据库时所需的用户名 -->
+                <property name="username" value="${dbproduction.username}"/>
+                <!-- 获取db.properties中用于生产环境连接数据库时所需的密码 -->
+                <property name="password" value="${dbproduction.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 配置mapper -->
+    <mappers>
+        <!--配置mapper方式1-->
+        <!--<mapper resource="com/cn/mapper/UserMapper.xml"/>-->
+        <!--配置mapper方式2-->
+        <package name="com.cn.mapper"/>
+    </mappers>
+
+</configuration>

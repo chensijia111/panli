@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.StudentMapper">
+
+    <!--依据id查询学生方式1-->
+    <select id="getStudentByID1" resultMap="studentResultMap1">
+        SELECT
+            s.*,t.*
+        FROM
+            student AS s
+                LEFT JOIN student_teacher_relation AS str ON s.s_id = str.s_id
+                LEFT JOIN teacher AS t ON t.t_id = str.t_id
+        WHERE
+            s.s_id = #{id}
+    </select>
+    <resultMap id="studentResultMap1" type="Student">
+        <id property="sId" column="s_id"></id>
+        <result property="sName" column="s_name"></result>
+        <collection property="teacherList" ofType="Teacher">
+            <id property="tId" column="t_id"></id>
+            <result property="tName" column="t_name"></result>
+        </collection>
+    </resultMap>
+
+    <!--依据id查询学生方式2-->
+    <select id="getStudentByID2" resultMap="studentResultMap2">
+        SELECT * FROM student WHERE s_id = #{id}
+    </select>
+    <resultMap id="studentResultMap2" type="Student">
+        <id property="sId" column="s_id"></id>
+        <result property="sName" column="s_name"></result>
+        <collection property="teacherList" column="s_id" ofType="Teacher"
+                    select="com.cn.mapper.TeacherMapper.findTeachers">
+
+        </collection>
+    </resultMap>
+
+    <!--依据老师id查询学生-->
+    <select id="findStudents" resultType="Student">
+        SELECT * FROM student WHERE s_id IN (SELECT s_id FROM student_teacher_relation WHERE t_id=#{id})
+    </select>
+
+</mapper>

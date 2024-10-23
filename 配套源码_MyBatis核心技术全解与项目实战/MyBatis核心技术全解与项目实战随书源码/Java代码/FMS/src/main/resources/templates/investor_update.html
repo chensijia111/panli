@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>修改客户</title>
+    <!-- 引入Bootstrap -->
+    <link rel="stylesheet" href="/static/Bootstrap/css/bootstrap.min.css"/>
+    <!-- 引入jQuery -->
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <!-- 引入Bootstrap的JavaScript插件 -->
+    <script src="/static/Bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet"/>
+    <script src="/static/js/sb-admin-2.js"></script>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css"/>
+
+
+    <script type="text/javascript">
+        // 修改客户
+        function updateInvestor() {
+            $.post("/investorController/update",
+                $("#edit_investor_form").serialize(),
+                function (data) {
+                    alert(data.description);
+                    if (data.status === 'OK') {
+                        window.location.href = '/investorController/list'
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <div th:replace="~{navbar :: nav }"></div>
+    <!-- 客户修改部分  start-->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">修改客户</h1>
+            </div>
+        </div>
+        <div class="">
+            <div class="panel-body">
+                <div class="row container">
+                    <form class="form-horizontal" id="edit_investor_form">
+                        <input type="hidden" id="edit_id" name="id" th:value="${investor.id}"/>
+                        <div class="form-group">
+                            <label for="edit_investorName" class="col-md-1 control-label">客户姓名</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="edit_investorName" name="name" placeholder="客户姓名"
+                                       th:value="${investor.name}"
+                                       type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_level" class="col-md-1 control-label"
+                                   style="float: left;">客户级别</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="edit_level" name="level"
+                                        class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="level : ${levelList}" th:value="${level.id}"
+                                            th:selected="${level.id+'' == investor.level}"
+                                            th:text="${level.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_field" class="col-md-1 control-label"
+                                   style="float: left;">投资领域</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="edit_field" name="field"
+                                        class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="field : ${fieldList}" th:value="${field.id}"
+                                            th:selected="${field.id+'' == investor.field}"
+                                            th:text="${field.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_intent" class="col-md-1 control-label"
+                                   style="float: left;">投资意向</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <select id="edit_intent" name="intent"
+                                        class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option th:each="intent : ${intentList}" th:value="${intent.id}"
+                                            th:selected="${intent.id+'' == investor.intent}"
+                                            th:text="${intent.description}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_amount" class="col-md-1 control-label">投资金额</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="edit_amount" name="amount" placeholder="投资金额"
+                                       th:value="${investor.amount}"
+                                       type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_city" class="col-md-1 control-label">居住城市</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="edit_city" name="city" placeholder="居住城市" th:value="${investor.city}"
+                                       type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_number" class="col-md-1 control-label">联系电话</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="edit_number" name="number" placeholder="联系电话" th:value="${investor.number}"
+                                       type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_note" class="col-md-1 control-label">备注信息</label>
+                            <div class="col-md-5">
+                                <!-- 请注意：name属性值与Investor中的属性名保持一致 -->
+                                <input id="edit_note" name="note" placeholder="备注信息"
+                                       th:value="${investor.note}"
+                                       type="text" class="form-control"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div class="left">
+                    <button type="button" class="btn btn-primary"
+                            onclick="updateInvestor()">保存修改
+                    </button>
+                    <span>&nbsp;&nbsp;</span>
+                    <a class="btn btn-default" href="/investorController/list"
+                       role="button">返回列表</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

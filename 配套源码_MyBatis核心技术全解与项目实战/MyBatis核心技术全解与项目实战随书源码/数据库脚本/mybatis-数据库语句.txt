@@ -1,0 +1,284 @@
+-- 创建数据库mybatisdb
+DROP DATABASE IF EXISTS mybatisdb;
+CREATE DATABASE mybatisdb;
+use mybatisdb;
+
+-- 创建用户表user
+CREATE TABLE user(
+  id INT primary key auto_increment,
+  username VARCHAR(50),
+  password VARCHAR(50),
+  gender VARCHAR(10)
+);
+
+-- 向用户表插入数据
+INSERT INTO user(username,password,gender) VALUES("lucy","123456","female");
+INSERT INTO user(username,password,gender) VALUES("momo","234567","female");
+INSERT INTO user(username,password,gender) VALUES("xixi","345678","female");
+INSERT INTO user(username,password,gender) VALUES("pepe","456123","female");
+
+-- 查询用户表中的数据
+SELECT * FROM user;
+
+
+-- 创建客户表
+DROP TABLE IF EXISTS customer;
+CREATE TABLE customer(
+  c_id INT primary key auto_increment,
+  c_name VARCHAR(50),
+  c_age INT(10)
+);
+
+-- 向客户表插入数据
+INSERT INTO customer(c_name,c_age) VALUES("lucy",21);
+INSERT INTO customer(c_name,c_age) VALUES("momo",22);
+INSERT INTO customer(c_name,c_age) VALUES("xixi",23);
+
+-- 查询客户表数据
+SELECT * FROM customer;
+
+-- 创建身份证表
+CREATE TABLE card(
+  id INT primary key auto_increment,
+  number VARCHAR(20)
+);
+
+-- 向身份证表插入数据
+INSERT INTO card(number) VALUES("23413719800304006X");
+INSERT INTO card(number) VALUES("34513719822304111X");
+
+-- 查询身份证表数据
+SELECT * FROM card;
+
+-- 创建公民表
+CREATE TABLE person(
+  id INT primary key auto_increment,
+  name VARCHAR(50),
+  mark INT unique
+);
+
+-- 添加外键约束
+ALTER TABLE person ADD CONSTRAINT fk_person_mark FOREIGN KEY(mark) REFERENCES card(id);
+
+-- 向公民表插入数据
+INSERT INTO person(name,mark) VALUES("lucy",1);
+INSERT INTO person(name,mark) VALUES("momo",2);
+
+-- 查询公民表数据
+SELECT * FROM person;
+
+-- 创建部门表
+CREATE TABLE department(
+  d_id INT PRIMARY KEY auto_increment,
+  d_name VARCHAR(20)
+);
+
+-- 向部门表插入数据
+INSERT INTO department(d_name) VALUES('财务部');
+INSERT INTO department(d_name) VALUES('技术部');
+INSERT INTO department(d_name) VALUES('行政部');
+
+-- 查询部门表数据
+SELECT * FROM department;
+
+-- 创建员工表
+CREATE TABLE employee(
+  e_id INT primary key auto_increment,
+  e_name VARCHAR(20),
+  d_id INT
+);
+
+-- 添加外键约束
+ALTER TABLE employee ADD CONSTRAINT fk_employee_did FOREIGN KEY(d_id) REFERENCES department(d_id);
+
+-- 向员工表插入数据
+INSERT INTO employee(e_name,d_id) VALUES('lucy',1);
+INSERT INTO employee(e_name,d_id) VALUES('lili',1);
+INSERT INTO employee(e_name,d_id) VALUES('momo',2);
+INSERT INTO employee(e_name,d_id) VALUES('mymy',2);
+INSERT INTO employee(e_name,d_id) VALUES('xuxu',3);
+INSERT INTO employee(e_name,d_id) VALUES('xexe',3);
+
+-- 查询员工表数据
+SELECT * FROM employee;
+
+-- 创建省份表
+CREATE TABLE province(
+  p_id INT PRIMARY KEY auto_increment,
+  p_name VARCHAR(50)
+);
+
+-- 向省份表插入数据
+INSERT INTO province(p_name) VALUES('陕西省');
+INSERT INTO province(p_name) VALUES('甘肃省');
+INSERT INTO province(p_name) VALUES('四川省');
+
+-- 查询省份表数据
+SELECT * FROM province;
+
+-- 创建城市表
+CREATE TABLE city(
+  c_id INT primary key auto_increment,
+  c_name VARCHAR(50),
+  p_id INT
+);
+
+-- 添加外键约束
+ALTER TABLE city ADD CONSTRAINT fk_city_pid FOREIGN KEY(p_id) REFERENCES province(p_id);
+
+-- 向城市表插入数据
+INSERT INTO city(c_name,p_id) VALUES('西安',1);
+INSERT INTO city(c_name,p_id) VALUES('咸阳',1);
+INSERT INTO city(c_name,p_id) VALUES('兰州',2);
+INSERT INTO city(c_name,p_id) VALUES('武威',2);
+INSERT INTO city(c_name,p_id) VALUES('成都',3);
+INSERT INTO city(c_name,p_id) VALUES('绵阳',3);
+
+-- 查询城市表数据
+SELECT * FROM city;
+
+
+-- 创建学生表
+CREATE TABLE student(
+	s_id INT PRIMARY KEY,
+	s_name VARCHAR(50) NOT NULL
+);
+
+-- 向学生表添加数据
+INSERT INTO student(s_id,s_name) VALUES(1,'lucy');
+INSERT INTO student(s_id,s_name) VALUES(2,'dila');
+INSERT INTO student(s_id,s_name) VALUES(3,'yuki');
+INSERT INTO student(s_id,s_name) VALUES(4,'kedo');
+
+-- 查询学生表数据
+SELECT * FROM student;
+
+-- 创建教师表
+CREATE TABLE teacher(
+	t_id INT(4) PRIMARY KEY,
+	t_name VARCHAR(50) NOT NULL
+);
+
+-- 向教师表添加数据
+INSERT INTO teacher(t_id,t_name) VALUES(1,'lili');
+INSERT INTO teacher(t_id,t_name) VALUES(2,'aiai');
+INSERT INTO teacher(t_id,t_name) VALUES(3,'klkl');
+INSERT INTO teacher(t_id,t_name) VALUES(4,'rqrq');
+
+-- 查询教师表数据
+SELECT * FROM teacher;
+
+-- 创建学生和老师的关系表
+CREATE TABLE student_teacher_relation(
+  s_id INT(4),
+  t_id INT(4)
+);
+
+-- 为学生和老师的关系表添加外键
+ALTER TABLE student_teacher_relation ADD CONSTRAINT fk_sid FOREIGN KEY (s_id) REFERENCES student(s_id);
+ALTER TABLE student_teacher_relation ADD CONSTRAINT fk_tid FOREIGN KEY (t_id) REFERENCES teacher(t_id);
+
+-- 向学生和老师的关系表添加数据
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(1,1);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(1,3);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(2,1);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(2,2);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(2,3);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(3,4);
+INSERT INTO student_teacher_relation(s_id,t_id) VALUES(4,1);
+
+-- 查询学生和老师的关系表数据
+SELECT * FROM student_teacher_relation;
+
+
+-- 创建手机表
+DROP TABLE IF EXISTS phone;
+CREATE TABLE phone(
+	id INT PRIMARY KEY auto_increment,
+	name VARCHAR(50) NOT NULL,
+	price INT
+);
+
+-- 向手机表添加数据
+INSERT INTO phone(name,price) VALUES('xiaomi01',3100);
+INSERT INTO phone(name,price) VALUES('xiaomi02',3200);
+INSERT INTO phone(name,price) VALUES('xiaomi03',3300);
+INSERT INTO phone(name,price) VALUES('xiaomi04',3400);
+INSERT INTO phone(name,price) VALUES('xiaomi05',3500);
+INSERT INTO phone(name,price) VALUES('xiaomi06',3600);
+INSERT INTO phone(name,price) VALUES('xiaomi07',3700);
+INSERT INTO phone(name,price) VALUES('xiaomi08',3800);
+INSERT INTO phone(name,price) VALUES('xiaomi09',3900);
+INSERT INTO phone(name,price) VALUES('xiaomi10',4000);
+INSERT INTO phone(name,price) VALUES('huawei01',4100);
+INSERT INTO phone(name,price) VALUES('huawei02',4200);
+INSERT INTO phone(name,price) VALUES('huawei03',4300);
+INSERT INTO phone(name,price) VALUES('huawei04',4400);
+INSERT INTO phone(name,price) VALUES('huawei05',4500);
+INSERT INTO phone(name,price) VALUES('huawei06',4600);
+INSERT INTO phone(name,price) VALUES('huawei07',4700);
+INSERT INTO phone(name,price) VALUES('huawei08',4800);
+INSERT INTO phone(name,price) VALUES('huawei09',4900);
+INSERT INTO phone(name,price) VALUES('huawei10',5000);
+INSERT INTO phone(name,price) VALUES('realme01',1100);
+INSERT INTO phone(name,price) VALUES('realme02',1200);
+INSERT INTO phone(name,price) VALUES('realme03',1300);
+INSERT INTO phone(name,price) VALUES('realme04',1400);
+INSERT INTO phone(name,price) VALUES('realme05',1500);
+INSERT INTO phone(name,price) VALUES('realme06',1600);
+INSERT INTO phone(name,price) VALUES('realme07',1700);
+INSERT INTO phone(name,price) VALUES('realme08',1800);
+INSERT INTO phone(name,price) VALUES('realme09',1900);
+INSERT INTO phone(name,price) VALUES('realme10',2000);
+INSERT INTO phone(name,price) VALUES('newman01',1100);
+INSERT INTO phone(name,price) VALUES('newman02',1200);
+INSERT INTO phone(name,price) VALUES('newman03',1300);
+INSERT INTO phone(name,price) VALUES('newman04',1400);
+INSERT INTO phone(name,price) VALUES('newman05',1500);
+INSERT INTO phone(name,price) VALUES('newman06',1600);
+INSERT INTO phone(name,price) VALUES('newman07',1700);
+
+-- 查询手机表数据
+SELECT * FROM phone;
+
+
+-- 创建工厂表
+DROP TABLE IF EXISTS factory;
+CREATE TABLE factory(
+  f_id INT PRIMARY KEY auto_increment,
+  f_name VARCHAR(20)
+);
+
+-- 向工厂表插入数据
+INSERT INTO factory(f_name) VALUES('民康食品工厂');
+INSERT INTO factory(f_name) VALUES('乐乐饮料工厂');
+INSERT INTO factory(f_name) VALUES('童趣玩具工厂');
+
+-- 查询工厂表数据
+SELECT * FROM factory;
+
+-- 创建工人表
+DROP TABLE IF EXISTS worker;
+CREATE TABLE worker(
+  w_id INT primary key auto_increment,
+  w_name VARCHAR(20),
+  f_id INT default 1
+);
+
+-- 添加外键约束
+ALTER TABLE worker ADD CONSTRAINT fk_worker_fid FOREIGN KEY(f_id) REFERENCES factory(f_id);
+
+-- 查询工人表插入数据
+INSERT INTO worker(w_name,f_id) VALUES('lucy',1);
+INSERT INTO worker(w_name,f_id) VALUES('lili',1);
+INSERT INTO worker(w_name,f_id) VALUES('momo',2);
+INSERT INTO worker(w_name,f_id) VALUES('mymy',2);
+INSERT INTO worker(w_name,f_id) VALUES('xuxu',3);
+INSERT INTO worker(w_name,f_id) VALUES('xexe',3);
+INSERT INTO worker(w_name,f_id) VALUES('fgfg',1);
+INSERT INTO worker(w_name,f_id) VALUES('dpdp',2);
+INSERT INTO worker(w_name,f_id) VALUES('lala',3);
+INSERT INTO worker(w_name,f_id) VALUES('zkzk',3);
+
+-- 查询工人表数据
+SELECT * FROM worker;

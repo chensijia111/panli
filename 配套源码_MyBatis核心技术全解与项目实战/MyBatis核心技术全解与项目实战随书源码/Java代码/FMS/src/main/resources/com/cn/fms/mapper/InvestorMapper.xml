@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.fms.mapper.InvestorMapper">
+    <!--SQL片段  -->
+    <sql id="queryInvestorWhere">
+        <where>
+            <if test="name != null and name != ''">
+                name like "%"#{name}"%"
+            </if>
+            <if test="levelID != null and levelID != ''">
+                and level = #{levelID}
+            </if>
+            <if test="fieldID != null and fieldID != ''">
+                and field = #{fieldID}
+            </if>
+            <if test="intentID != null and intentID != ''">
+                and intent = #{intentID}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询客户列表  -->
+    <select id="queryInvestor" parameterType="investorDto" resultType="investor">
+        select i.id,i.name, d1.description as level ,i.amount, d2.description as field, d3.description as intent,i.city,i.number, i.note,
+        i.create_time as createTime
+        from investor as i
+        left join dictionary as d1 on i.level = d1.id
+        left join dictionary as d2 on i.field = d2.id
+        left join dictionary as d3 on i.intent = d3.id
+
+        <include refid="queryInvestorWhere"/>
+
+    </select>
+
+    <insert id="insertInvestor" parameterType="investor">
+        insert into investor(name, level, amount, field, intent, city, number, note,create_time)
+        values (#{name}, #{level}, #{amount}, #{field}, #{intent}, #{city}, #{number}, #{note}, #{createTime})
+    </insert>
+
+    <select id="queryInvestorById" parameterType="Integer" resultType="investor">
+        select * from investor where id = #{id}
+    </select>
+
+    <update id="updateInvestor" parameterType="investor">
+        update investor
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="level!=null">
+                level=#{level},
+            </if>
+            <if test="amount!=null">
+                amount=#{amount},
+            </if>
+            <if test="field!=null">
+                field=#{field},
+            </if>
+            <if test="intent!=null">
+                intent=#{intent},
+            </if>
+            <if test="city!=null">
+                city=#{city},
+            </if>
+            <if test="number!=null">
+                number=#{number},
+            </if>
+            <if test="note!=null">
+                note=#{note},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteInvestor" parameterType="Integer">
+        delete from investor where id = #{id}
+    </delete>
+
+    <select id="queryInvestorProportionByType" parameterType="int" resultType="map">
+        SELECT description AS name, COUNT(investor.id) AS value
+        FROM investor
+        LEFT JOIN dictionary
+        <choose>
+            <when test="type == 1">
+                ON investor.level=dictionary.id
+                GROUP BY investor.level
+            </when>
+            <when test="type == 2">
+                ON investor.field=dictionary.id
+                GROUP BY investor.field
+            </when>
+            <when test="type == 3">
+                ON investor.intent=dictionary.id
+                GROUP BY investor.intent
+            </when>
+        </choose>
+    </select>
+
+</mapper>

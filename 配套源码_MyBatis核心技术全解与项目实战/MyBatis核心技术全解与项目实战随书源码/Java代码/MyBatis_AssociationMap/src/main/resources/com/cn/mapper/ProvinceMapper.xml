@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.ProvinceMapper">
+
+    <!--依据id查询省份方式1-->
+    <select id="findProvinceById1" resultMap="provinceResultMap1">
+        select p.*,c.c_id,c.c_name
+        from province as p inner join city as c on p.p_id=c.p_id
+        where p.p_id = #{id}
+    </select>
+    <resultMap id="provinceResultMap1" type="Province">
+        <id property="pId" column="p_id"></id>
+        <result property="pName" column="p_name"></result>
+        <collection property="cityList" ofType="City">
+            <id property="cId" column="c_id"></id>
+            <result property="cName" column="c_name"></result>
+            <result property="pId" column="p_id"></result>
+        </collection>
+    </resultMap>
+
+    <!--依据id查询省份方式2-->
+    <select id="findProvinceById2" resultMap="provinceResultMap2">
+        select * from province where p_id = #{id}
+    </select>
+    <resultMap id="provinceResultMap2" type="Province">
+        <id property="pId" column="p_id"></id>
+        <result property="pName" column="p_name"></result>
+        <collection property="cityList" column="p_id" ofType="City"
+                    select="com.cn.mapper.CityMapper.findCityByProvinceId"/>
+    </resultMap>
+
+
+
+    <select id="findProvinceById3" resultMap="provinceResultMap3">
+        select p.*,c.c_id,c.c_name
+        from province as p inner join city as c on p.p_id=c.p_id
+        where p.p_id = #{id}
+    </select>
+    <resultMap id="provinceResultMap3" type="Province">
+        <id property="pId" column="p_id"></id>
+        <result property="pName" column="p_name"></result>
+        <collection property="cityList" ofType="City">
+            <id property="cId" column="c_id"></id>
+            <result property="cName" column="c_name"></result>
+            <result property="pId" column="p_id"></result>
+        </collection>
+    </resultMap>
+
+
+</mapper>

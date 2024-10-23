@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.fms.mapper.NewsMapper">
+
+    <!--SQL片段  -->
+    <sql id="queryNewsWhere">
+        <where>
+            <if test="keywords != null and keywords != ''">
+                title like "%"#{keywords}"%"
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryNews" resultType="news">
+        select n.id,n.title,n.content,n.image,n.create_time as createTime,e.nickname as publisher
+        from news as n left join employee as e on n.publisher =e.id
+        <include refid="queryNewsWhere"/>
+    </select>
+
+    <insert id="insertNews" parameterType="news">
+        insert into news(title, content, image, publisher, create_time)
+        values (#{title}, #{content}, #{image}, #{publisher}, #{createTime})
+    </insert>
+
+    <select id="queryNewsById" parameterType="Integer" resultType="news">
+        select * from news where id = #{id}
+    </select>
+
+    <update id="updateNews" parameterType="news">
+        update news
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="content!=null">
+                content=#{content},
+            </if>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 删除新闻 -->
+    <delete id="deleteNews" parameterType="Integer">
+        delete from news where id = #{id}
+    </delete>
+
+</mapper>

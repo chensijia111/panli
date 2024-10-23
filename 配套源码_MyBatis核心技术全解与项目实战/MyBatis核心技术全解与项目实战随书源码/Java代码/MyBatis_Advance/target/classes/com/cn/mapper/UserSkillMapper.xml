@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.mapper.UserSkillMapper">
+
+    <insert id="insertUserGetID1" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(username,password,gender) values (#{username},#{password},#{gender})
+    </insert>
+
+    <insert id="insertUserGetID2" parameterType="User">
+        <selectKey order="AFTER" keyProperty="id" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into user(username,password,gender) values (#{username},#{password},#{gender})
+    </insert>
+
+    <select id="getCount" resultType="Integer">
+        <!--错误写法如下-->
+        <!--select count(*) from #{tableName}-->
+        <!--正确写法如下-->
+        select count(*) from ${tableName}
+    </select>
+
+    <delete id="deleteMore">
+        <!--错误写法如下-->
+        <!--delete from user where id in(#{ids})-->
+        <!--正确写法如下-->
+        delete from user where id in(${ids})
+    </delete>
+
+</mapper>
+
